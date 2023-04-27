@@ -1,11 +1,18 @@
 const hre = require("hardhat");
 
-async function main() {
-  const NftContract = await hre.ethers.getContractFactory("NftContract");
-  const nftContract = await NftContract.deploy("NftContract", "NFT", 0, {
-    gasPrice: 20000000000,
-  });
+const constants = require("../constants");
 
+async function main() {
+  const [owner, address] = await hre.ethers.getSigners();
+  const NftContract = await hre.ethers.getContractFactory(
+    "NftContractUpgradeable"
+  );
+
+  const nftContract = await upgrades.deployProxy(NftContract, [
+    constants.TOKEN_NAME,
+    constants.TOKEN_SYMBOL,
+    constants.MAX_SUPPLY,
+  ]);
   console.log("txHash: ", nftContract.deployTransaction.hash);
 
   const contractInstance = await nftContract.deployed();
@@ -15,7 +22,7 @@ async function main() {
 
   console.log(`Contract SimpleNft deployed to ${contractInstance.address}`);
   console.log(
-    `Contract NftContract has Symbol: ${contractName} and Name: ${contractSymbol}`
+    `Contract SimpleNft has Symbol: ${contractName} and Name: ${contractSymbol}`
   );
   // console.log('Receipt: ', contractInstance.deployTransaction);
 }

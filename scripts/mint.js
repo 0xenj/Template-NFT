@@ -1,23 +1,30 @@
 const hre = require("hardhat");
 
 async function main() {
+  const [deployer] = await hre.ethers.getSigners();
   const NftContract = await hre.ethers.getContractFactory("NftContract");
-  const nftContract = await NftContract.deploy("NftContract", "NFT", 0, {
-    gasPrice: 20000000000,
-  });
 
-  console.log("txHash: ", nftContract.deployTransaction.hash);
-
-  const contractInstance = await nftContract.deployed();
+  const contractInstance = new hre.ethers.Contract(
+    "0x10C3e6FbdFBb43459B13B6957f77097EE5aC7931",
+    NftContract.interface,
+    deployer
+  );
 
   const contractName = await contractInstance.name();
   const contractSymbol = await contractInstance.symbol();
 
   console.log(`Contract SimpleNft deployed to ${contractInstance.address}`);
   console.log(
-    `Contract NftContract has Symbol: ${contractName} and Name: ${contractSymbol}`
+    `Contract SimpleNft has Symbol: ${contractName} and Name: ${contractSymbol}`
   );
-  // console.log('Receipt: ', contractInstance.deployTransaction);
+
+  const mintTx = await contractInstance.mint(1, {
+    value: hre.ethers.utils.parseEther("0.05"),
+  });
+
+  console.log("txHash: ", mintTx.hash);
+
+  await mintTx.wait();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
