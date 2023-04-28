@@ -14,7 +14,8 @@ contract Errors is DSTest {
     // 0
     Success,
     // 1
-    SkipValidation
+    SkipValidation,
+    Example
   }
 
   // Associate your error with a revert message and add it to the mapping.

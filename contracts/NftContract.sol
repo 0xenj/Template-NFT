@@ -7,7 +7,7 @@ import './abstracts/Controlable.sol';
 import './abstracts/Mintable.sol';
 import './abstracts/WListable.sol';
 
-contract SimpleNft is Controlable, WListable, Mintable {
+contract NftContract is Controlable, WListable, Mintable {
   using Strings for uint256;
 
   constructor(string memory name_, string memory symbol_, uint256 maxSupply_) Mintable(name_, symbol_, maxSupply_) {}

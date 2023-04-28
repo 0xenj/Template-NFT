@@ -25,7 +25,7 @@ contract Functions is Constants, Errors, TestStorage, TestData {
     vm.warp(100);
     vm.startPrank(ADMIN);
 
-    nftContract = new SimpleNft(NAME_ERC721, SYMBOL_ERC721, MAX_SUPPLY_ERC721);
+    nftContract = new NftContract(NAME_ERC721, SYMBOL_ERC721, MAX_SUPPLY_ERC721);
 
     nftContract.updateWhitelistRoot(_ROOT_WHITELIST);
 
